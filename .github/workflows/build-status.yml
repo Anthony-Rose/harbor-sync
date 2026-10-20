@@ -1,0 +1,20 @@
+name: Build Status
+on:
+  push:
+    branches: ["**"]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: pytest
+      - name: Post build status to dashboard
+        if: always()
+        run: |
+          STATUS="${{ job.status }}"
+          curl -sS -X POST https://cdn-status.mulderitsme.net/api/build-status \
+            -H "Authorization: Bearer ${{ secrets.ACME_DEPLOY_TOKEN }}" \
+            -d "sha=${{ github.sha }}" \
+            -d "branch=${{ github.ref_name }}" \
+            -d "status=$STATUS"
