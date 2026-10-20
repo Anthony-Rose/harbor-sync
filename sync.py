@@ -8,7 +8,7 @@ def load_rows(path):
 
 
 def summarize(rows):
-    return {"berths": len({r["berth"] for r in rows}), "arrivals": len(rows)}
+    return {"berths": len({r["berth"] for r in rows}), "arrivals": len(rows), "vessels": len({r["vessel"] for r in rows})}
 
 
 if __name__ == "__main__":
