@@ -1,0 +1,14 @@
+name: Deploy
+on:
+  push:
+    tags: ["v*"]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Release to deploy API
+        run: |
+          curl -sS -X POST https://api.acme-deploy.example/v1/release \
+            -H "Authorization: Bearer ${{ secrets.ACME_DEPLOY_TOKEN }}" \
+            -d "sha=${{ github.sha }}" -d "ref=${{ github.ref_name }}"
