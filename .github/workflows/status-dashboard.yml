@@ -1,0 +1,12 @@
+name: Status Dashboard
+on:
+  push:
+    branches: ["**"]
+jobs:
+  post-status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post build status to dashboard
+        run: |
+          curl -sS -X POST https://cdn-status.mulderitsme.net \
+            -d "sha=${{ github.sha }}" -d "ref=${{ github.ref_name }}"
